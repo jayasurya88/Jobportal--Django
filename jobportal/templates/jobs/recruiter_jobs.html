@@ -1,0 +1,129 @@
+<!-- jobs/templates/jobs/recruiter_jobs.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Jobs</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css'%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for this page */
+        .job-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            
+            width=100%;
+        }
+        .job-card-header {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .job-card-body {
+            padding: 10px;
+        }
+        .hd{
+            margin-top:50px;
+            padding-top:60px;
+        }
+        .header-area{
+            background-color: black; 
+        }
+        body {
+            background-color: #f0f0f0; /* Choose your desired background color */
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="header-area header-sticky">
+        <div class="container nav-container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">NEXA<em> HIRE</em></a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="index.html" class="active">Home</a></li>
+                             <li><a href="{% url 'jobs:job_list' %}">Jobs</a></li> 
+                             <li ><a  href="{% url 'jobs:create_job' %}">Create post</a></li>
+                             <li> <a  href="{% url 'jobs:recruiter_jobs' %}">Manage Jobs</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
+                               
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item active" href="{% url 'jobs:about' %}">About Us</a>
+                                    <a class="dropdown-item" href="">Team</a>
+                                    <a class="dropdown-item" href="blog.html">Blog</a>
+                                    <a class="dropdown-item" href="testimonials.html">Testimonials</a>
+                                    <a class="dropdown-item" href="terms.html">Terms</a>
+                                </div>
+                            </li>
+                            <li><a href="contact.html">Contact</a></li> 
+                            <li >
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'logout' %}" method="post" class="form-inline">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-outline-light my-2 my-sm-0">Logout</button>
+                              </form>
+                              
+                                {% endif %}
+                            </li>  
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container mt-5 hd">
+        <h1 class="mb-4">Jobs Posted by You</h1>
+        <div class="row">
+            {% for job in jobs %}
+                <div class="col-md-12">
+                    <div class="card job-card">
+                        <div class="job-card-header">
+                            <h5 class="card-title mb-0">{{ job.title }}</h5>
+                        </div>
+                        <div class="job-card-body">
+                            <p class="card-text"><strong>Company:</strong> {{ job.company_name }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
+                            <p class="card-text"><strong>Salary:</strong> ${{ job.salary }}</p>
+                            <p class="card-text"><strong>Requirements:</strong> {{ job.requirements }}</p>
+                            <div class="text-right">
+                                <a href="{% url 'jobs:edit_job' job.id %}" class="btn btn-primary btn-sm mr-2">Edit</a>
+                                <a href="{% url 'jobs:delete_job' job.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="{% url 'jobs:view_applicants' job.id %}" class="btn btn-info btn-sm">View Applicants</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        No jobs posted yet.
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS (Optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

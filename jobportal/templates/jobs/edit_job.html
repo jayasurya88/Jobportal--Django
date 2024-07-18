@@ -1,0 +1,139 @@
+<!-- jobs/templates/jobs/edit_job.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css'%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for this page */
+        body {
+            padding: 40px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-top:30px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        /* Fixed height for description textarea */
+        #id_description {
+            height: 150px; /* Adjust height as needed */
+        }
+        /* Success message style */
+        .alert-success {
+            margin-bottom: 20px;
+        }
+        .header-area{
+            background-color: black; 
+        }
+        .btn-primary{
+            background-color:#ed563b;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-area header-sticky">
+        <div class="container nav-container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">NEXA<em> HIRE</em></a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="index.html" class="active">Home</a></li>
+                             <li><a href="{% url 'jobs:job_list' %}">Jobs</a></li> 
+                             <li ><a  href="{% url 'jobs:create_job' %}">Create post</a></li>
+                             <li> <a  href="{% url 'jobs:recruiter_jobs' %}">Manage Jobs</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
+                               
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item active" href="{% url 'jobs:about' %}">About Us</a>
+                                    <a class="dropdown-item" href="team.html">Team</a>
+                                    <a class="dropdown-item" href="blog.html">Blog</a>
+                                    <a class="dropdown-item" href="testimonials.html">Testimonials</a>
+                                    <a class="dropdown-item" href="terms.html">Terms</a>
+                                </div>
+                            </li>
+                            <li><a href="contact.html">Contact</a></li> 
+                            <li >
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'logout' %}" method="post" class="form-inline">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-outline-light my-2 my-sm-0">Logout</button>
+                              </form>
+                              
+                                {% endif %}
+                            </li>  
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-sm">
+        <div class="form-container">
+            {% if saved %}
+                <div class="alert alert-success" role="alert">
+                    Changes saved successfully!
+                </div>
+            {% endif %}
+            <h1 class="mb-4">Edit Job</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_title" class="font-weight-bold">Title:</label>
+                    <input type="text" id="id_title" name="title" class="form-control" value="{{ form.title.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_company_name" class="font-weight-bold">Company Name:</label>
+                    <input type="text" id="id_company_name" name="company_name" class="form-control" value="{{ form.company_name.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_location" class="font-weight-bold">Location:</label>
+                    <input type="text" id="id_location" name="location" class="form-control" value="{{ form.location.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_description" class="font-weight-bold">Description:</label>
+                    <textarea id="id_description" name="description" class="form-control">{{ form.description.value }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="id_salary" class="font-weight-bold">Salary:</label>
+                    <input type="text" id="id_salary" name="salary" class="form-control" value="{{ form.salary.value }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_requirements" class="font-weight-bold">Requirements:</label>
+                    <textarea id="id_requirements" name="requirements" class="form-control">{{ form.requirements.value }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (Optional but recommended for Bootstrap features) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

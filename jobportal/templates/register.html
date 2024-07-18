@@ -1,0 +1,170 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhIhSkbIYc4tCCJqUgpZelNiTaenRFIgOOGbxHgKf4Afxiziy2CamCVJheKLR6BHwMIoO6J0ELt7DB4kpyus6bFSJJxqxAK9wNr66D0jPOp54MDO-BjAoFiUAYYjzpkeEOgAckxYsjwsrhAEf7kekQM-9yGBn9uQYcxLxPgGgUG6IMurLBhVpYQTwejcQ/s1600/Abstract-mesh-background-3840x2160.png");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            color: #333;
+        }
+        
+        .card {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        h1 {
+            font-weight: 600;
+            color: #ed563b;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ed563b;
+        }
+        
+        .form-check-label {
+            font-weight: 400;
+            color: #555;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #ed563b;
+            border-color: #ed563b;
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ed563b;
+            border-color: #ed564f;
+        }
+        
+        .text-danger {
+            color: #ed563b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .description {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 2px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+            color: #555;
+        }
+    </style>
+
+    <title>User Registration Page</title>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <h1>User Registration</h1>
+                {% if msg %}
+                    <p class="text-muted">{{ msg }}</p>
+                {% else %}
+                    <p class="text-muted">Please fill out the form to register.</p>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group">
+                        <label for="password1">Password</label>
+                        {{ form.password1 }}
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Confirm Password</label>
+                        {{ form.password2 }}
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label><br>
+                        {% for role, role_name in form.role.field.choices %}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="{{ role }}" name="role" value="{{ role }}">
+                                <label class="form-check-label" for="{{ role }}">{{ role_name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <span class="text-danger">{{ form.errors }}</span>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <a href="{% url 'login_view' %}">Already have account..?</a>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="description">
+                <h1>About Hire Portal</h1>
+                <p>Welcome to our hiring portal! Register now to access a wide range of job opportunities.</p>
+                <p>Our platform connects job seekers with recruiters and employers, making the job search process efficient and effective.</p>
+                <p>Join us today and take the next step in your career journey!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

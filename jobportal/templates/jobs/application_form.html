@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Form</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css'%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin:20px;
+            font-family: "Poppins", sans-serif;
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhIhSkbIYc4tCCJqUgpZelNiTaenRFIgOOGbxHgKf4Afxiziy2CamCVJheKLR6BHwMIoO6J0ELt7DB4kpyus6bFSJJxqxAK9wNr66D0jPOp54MDO-BjAoFiUAYYjzpkeEOgAckxYsjwsrhAEf7kekQM-9yGBn9uQYcxLxPgGgUG6IMurLBhVpYQTwejcQ/s1600/Abstract-mesh-background-3840x2160.png'); /* Background image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding: 20px;
+            color: #333; /* Text color on top of background image */
+        }
+        .container-sk{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding:45px;
+        }
+        .form-container, .company-info {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .company-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .company-info p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        button[type="submit"],
+        button[type="button"] {
+            /* Use Bootstrap button classes for styling */
+            margin-top: 20px; /* Add spacing above buttons */
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%; /* Make buttons full-width */
+        }
+        label {
+            display: block; /* Ensures labels appear on new lines */
+            font-weight: bold; /* Make labels bold for emphasis */
+            margin-bottom: 8px; /* Adds spacing below each label */
+          }
+          input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    width: 100%; /* Make input fields expand to full width */
+    padding: 10px; /* Adds padding inside input fields */
+    margin-bottom: 15px; /* Adds spacing below each input field */
+    border: 1px solid #ccc; /* Adds a border with a light gray color */
+    border-radius: 4px; /* Rounds the corners of input fields */
+    box-sizing: border-box; /* Includes padding and border in input width */
+}
+.header-area{
+    background-color: black; 
+}
+          /* Styling for text input fields */
+          
+    </style>
+</head>
+<body>
+    <header class="header-area header-sticky">
+        <div class="container nav-container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">NEXA<em> HIRE</em></a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="index.html" class="active">Home</a></li>
+                             <li><a href="{% url 'jobs:job_list' %}">Jobs</a></li> 
+                             
+                             
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
+                               
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item active" href="{% url 'jobs:about' %}">About Us</a>
+                                    <a class="dropdown-item" href="team.html">Team</a>
+                                    <a class="dropdown-item" href="blog.html">Blog</a>
+                                    <a class="dropdown-item" href="testimonials.html">Testimonials</a>
+                                    <a class="dropdown-item" href="terms.html">Terms</a>
+                                </div>
+                            </li>
+                            <li><a href="contact.html">Contact</a></li> 
+                            <li >
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'logout' %}" method="post" class="form-inline">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-outline-light my-2 my-sm-0">Logout</button>
+                              </form>
+                              
+                                {% endif %}
+                            </li>  
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<div class="container-sk">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="form-container">
+                <h1 class="mb-4">Apply Now</h1>
+                <form method="post" enctype="multipart/form-data" class="form-group">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                    <button type="button" class="btn btn-warning mt-3" onclick="goBack()">Go Back</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-8">
+            <div class="company-info">
+                <h2>Apply for the position of {{ job.title }}  </h2>
+               
+                <h6>Company: {{ job.company_name }}</h6><p>Location: {{ job.location }}</p>
+            </div>
+            <div class="company-info">
+                <h2>About Our Nexahire</h2>
+                <p>
+                    NexaHire is a cutting-edge job portal that revolutionizes the way professionals connect with opportunities. Our platform boasts an extensive database of curated job listings from reputable companies, allowing job seekers to discover roles tailored to their skills and aspirations. Through advanced candidate profiles and intelligent job matching algorithms, NexaHire facilitates seamless connections between talent and employers. Job seekers benefit from personalized job alerts and valuable company insights, enabling informed decision-making. Our user-friendly interface and mobile compatibility ensure a smooth and efficient job search experience. With dedicated support and a comprehensive resource center, NexaHire empowers individuals at every stage of their career journey.Whether you're a seasoned professional or just starting out, NexaHire is your gateway to meaningful career advancement. 
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Applicants</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include Custom CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'assets/css/font-awesome.css' %}">
+    <style>
+        /* Additional Custom Styles */
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            margin-bottom: 5px;
+        }
+        .update-status-form {
+            margin-top: 10px;
+        }
+        .header-area {
+            background-color: black;
+            color: white;
+            padding: 10px 0;
+        }
+        body {
+            background-color: #f0f0f0;
+        }
+        .Applicants{
+            background-color: rgb(230, 228, 225);
+        }
+    </style>
+</head>
+<body>
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'recruiter' %}" class="logo">NEXA<em> HIRE</em></a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="{% url 'recruiter' %}" class="active">Home</a></li>
+                             <li><a href="{% url 'jobs:job_list' %}">Jobs</a></li> 
+                             <li ><a  href="{% url 'jobs:create_job' %}">Create post</a></li>
+                             <li> <a  href="{% url 'jobs:recruiter_jobs' %}">Manage Jobs</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
+                               
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item active" href="{% url 'jobs:about' %}">About Us</a>
+                                    <a class="dropdown-item" href="">Team</a>
+                                    <a class="dropdown-item" href="blog.html">Blog</a>
+                                    <a class="dropdown-item" href="testimonials.html">Testimonials</a>
+                                    <a class="dropdown-item" href="terms.html">Terms</a>
+                                </div>
+                            </li>
+                            <li><a href="contact.html">Contact</a></li> 
+                            <li >
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'logout' %}" method="post" class="form-inline">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-outline-light my-2 my-sm-0">Logout</button>
+                              </form>
+                              
+                                {% endif %}
+                            </li>  
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4 Applicants">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                {% if job %}
+                    <div class="text-center">
+                        <h1 class="mb-4">Job ID: {{ job.id }}</h1>
+                        <h2>Title: {{ job.title }}</h2>
+                    </div>
+                    <div class="mt-4">
+                        {% for application in job_applications %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ application.name }}</h5>
+                                    <p class="card-text"><strong>Email:</strong> {{ application.email }}</p>
+                                    <p class="card-text"><strong>Phone Number:</strong> {{ application.phone_number }}</p>
+                                    <p class="card-text"><strong>Year of Passout:</strong> {{ application.year_of_passout }}</p>
+                                    <p class="card-text"><strong>Qualification:</strong> {{ application.qualification }}</p>
+                                    <p class="card-text"><strong>Status:</strong>
+                                        {% if application.status == 'shortlisted' %}
+                                            <span class="badge badge-success">Shortlisted</span>
+                                        {% elif application.status == 'rejected' %}
+                                            <span class="badge badge-danger">Rejected</span>
+                                        {% else %}
+                                            <span class="badge badge-secondary">Pending</span>
+                                        {% endif %}
+                                    </p>
+                                    {% if user.is_recruiter %}
+                                        <!-- Status Update Form -->
+                                        <form method="POST" action="{% url 'jobs:update_status' application.id %}" class="update-status-form">
+                                            {% csrf_token %}
+                                            <label for="status">Update Status:</label>
+                                            <select name="status" id="status" class="form-control">
+                                                <option value="pending" {% if application.status == 'pending' %}selected{% endif %}>Pending</option>
+                                                <option value="shortlisted" {% if application.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                                                <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary mt-2">Update</button>
+                                        </form>
+                                    {% endif %}
+                                    <a href="{{ application.resume.url }}" class="btn btn-info mt-3">Download Resume</a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="alert alert-info" role="alert">
+                                No applications yet for "{{ job.title }}".
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        Job Not Found.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS (Optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

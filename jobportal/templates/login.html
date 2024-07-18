@@ -1,0 +1,159 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhIhSkbIYc4tCCJqUgpZelNiTaenRFIgOOGbxHgKf4Afxiziy2CamCVJheKLR6BHwMIoO6J0ELt7DB4kpyus6bFSJJxqxAK9wNr66D0jPOp54MDO-BjAoFiUAYYjzpkeEOgAckxYsjwsrhAEf7kekQM-9yGBn9uQYcxLxPgGgUG6IMurLBhVpYQTwejcQ/s1600/Abstract-mesh-background-3840x2160.png");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            color: #333;
+        }
+        
+        .content {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-block {
+            padding: 40px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+        
+        h1 {
+            font-weight: 600;
+            color: #ed563b;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ed563b;
+        }
+        
+        .btn-primary {
+            background-color: #ed563b;
+            border-color: #ed563b;
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ed563b;
+            border-color: #ed563b;
+        }
+        
+        .text-muted {
+            color: #777;
+        }
+
+        .forgot-pass {
+            color: #ed563b;
+        }
+
+        .image-description {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-block">
+                    <h1>User Login</h1>
+                    {% if msg %}
+                        <p class="text-muted">{{ msg | safe }}</p>
+                    {% else %}
+                        <p class="text-muted">Please enter your credentials to log in.</p>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            {{ form.username }}
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            {{ form.password }}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <label class="control control--checkbox mb-0">
+                                <span class="caption">Remember me</span>
+                                <input type="checkbox" checked="checked">
+                                <div class="control__indicator"></div>
+                            </label>
+                            <a href="#" class="forgot-pass">Forgot Password</a>
+                        </div>
+                        <input type="submit" value="Log In" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="text-center">
+                    <img src="{% static 'images/undraw_file_sync_ot38.svg' %}" alt="Image" class="img-fluid">
+                    <div class="image-description">
+                        <p>Securely access your account and manage your tasks with ease.</p>
+                        <p>Our platform ensures a seamless login experience for all users.</p>
+
+                    </div>
+                    <a href="{% url 'register' %}">Don't have account..?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

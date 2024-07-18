@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhIhSkbIYc4tCCJqUgpZelNiTaenRFIgOOGbxHgKf4Afxiziy2CamCVJheKLR6BHwMIoO6J0ELt7DB4kpyus6bFSJJxqxAK9wNr66D0jPOp54MDO-BjAoFiUAYYjzpkeEOgAckxYsjwsrhAEf7kekQM-9yGBn9uQYcxLxPgGgUG6IMurLBhVpYQTwejcQ/s1600/Abstract-mesh-background-3840x2160.png");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            color: #333;
+        }
+        
+        .header-area {
+            background-color: black; 
+        }
+        
+        .container-ss {
+            max-width: 1500px;
+            padding: 100px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between; /* Align form and description */
+            align-items: flex-start;
+        }
+
+        .form-container {
+            width: 60%; /* Adjust form container width */
+        }
+
+        .job-description {
+            width: 35%; /* Adjust description container width */
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #ffa600;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            resize: none; /* Disable textarea resize handle */
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #ffc801;
+        }
+
+        .btn-primary {
+            background-color: #ff9d00;
+            border-color: #000000;
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .invalid-feedback {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-area header-sticky">
+        <div class="container nav-container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="index.html" class="logo">NEXA<em> HIRE</em></a>
+                        <ul class="nav">
+                            <li><a href="index.html" class="active">Home</a></li>
+                            <li><a href="{% url 'jobs:job_list' %}">Jobs</a></li> 
+                            <li><a href="{% url 'jobs:create_job' %}">Create post</a></li>
+                            <li><a href="{% url 'jobs:recruiter_jobs' %}">Manage Jobs</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item active" href="{% url 'jobs:about' %}">About Us</a>
+                                    <a class="dropdown-item" href="team.html">Team</a>
+                                    <a class="dropdown-item" href="blog.html">Blog</a>
+                                    <a class="dropdown-item" href="testimonials.html">Testimonials</a>
+                                    <a class="dropdown-item" href="terms.html">Terms</a>
+                                </div>
+                            </li>
+                            <li><a href="contact.html">Contact</a></li> 
+                            <li>{% if user.is_authenticated %}
+                                <form action="{% url 'logout' %}" method="post" class="form-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-light my-2 my-sm-0">Logout</button>
+                                </form>
+                                {% endif %}
+                            </li>  
+                        </ul>        
+                        <a class='menu-trigger'><span>Menu</span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container-ss">
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+        {% endif %}
+        
+        <div class="form-container">
+            <h2>Create Job Posting</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Title:</label>
+                    {{ form.title }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.company_name.id_for_label }}">Company Name:</label>
+                    {{ form.company_name }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description:</label>
+                    <textarea id="{{ form.description.id_for_label }}" name="{{ form.description.name }}" rows="6"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.location.id_for_label }}">Location:</label>
+                    {{ form.location }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.salary.id_for_label }}">Salary:</label>
+                    {{ form.salary }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.requirements.id_for_label }}">Requirements:</label>
+                    {{ form.requirements }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.company_logo.id_for_label }}">Company Logo:</label>
+                    {{ form.company_logo }}
+                </div>
+                
+        
+                <button type="submit" class="btn btn-primary">Create Job</button>
+            </form>
+        </div>
+        
+        <div class="job-description">
+            <h3>Create Job Post</h3>
+            <p>
+                Job Title
+Provide a clear and descriptive job title that accurately reflects the position you're hiring for.
+Company Name
+Enter the name of your company or organization.
+Job Description
+Craft a detailed job description. Include:
+Responsibilities: Outline the main duties and tasks associated with the role.
+Qualifications: Specify the required skills, experience, and education.
+Benefits: Highlight any perks, benefits, or opportunities offered by your company.
+Company Overview: Briefly introduce your company and its values.
+Location
+Specify the location of the job (e.g., city, state, country).
+Salary Information (Optional)
+If applicable, provide details about the salary range or compensation package.
+Requirements
+List specific qualifications, skills, and experience required for the position.
+            </p>
+        </div>
+        
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
